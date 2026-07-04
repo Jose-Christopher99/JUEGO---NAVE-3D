@@ -1,0 +1,27 @@
+# Carpetas generadas por Unity (se regeneran solas)
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+[Uu]serSettings/
+
+# Archivos de Visual Studio / Rider
+.vs/
+.vscode/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+
+# Archivos de sistema
+.DS_Store
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Crashlytics
+crashlytics-build.properties

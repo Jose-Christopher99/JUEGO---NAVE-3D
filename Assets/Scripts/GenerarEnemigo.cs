@@ -11,23 +11,36 @@ public class GenerarEnemigo : MonoBehaviour
     public float limiteX = 8f;
     public float spawnY = 6f;
 
+    [Header("Cantidad de Meteoritos")]
+    public int maxMeteoritos = 10;
+
+    private int meteoritosGenerados = 0;
+
+    public bool NivelCompletado => meteoritosGenerados >= maxMeteoritos;
+
     void Start()
     {
-        // Llama repetidamente al método SpawnEnemigo
-        InvokeRepeating("SpawnEnemigo", tiempoInicial, tiempoEntreEnemigos);
+        InvokeRepeating(nameof(SpawnEnemigo), tiempoInicial, tiempoEntreEnemigos);
     }
 
     void SpawnEnemigo()
     {
+        // Si ya se generó el máximo, detener el generador
+        if (meteoritosGenerados >= maxMeteoritos)
+        {
+            CancelInvoke(nameof(SpawnEnemigo));
+            GameManager.Instance.MostrarMensajeNivel();
+            return;
+        }
+
         if (enemigoPrefab != null)
         {
-            // Calcula una coordenada X aleatoria
             float xAleatorio = Random.Range(-limiteX, limiteX);
             Vector3 posicionSpawn = new Vector3(xAleatorio, spawnY, 0f);
 
-            // Instancia el clon del enemigo
             Instantiate(enemigoPrefab, posicionSpawn, Quaternion.identity);
+
+            meteoritosGenerados++;
         }
     }
-
 }

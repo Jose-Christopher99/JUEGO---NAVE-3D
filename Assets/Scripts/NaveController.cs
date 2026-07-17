@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NaveController : MonoBehaviour
 {
@@ -26,6 +27,16 @@ public class NaveController : MonoBehaviour
     private bool esInvulnerable = false;
     private bool estaViva = true;
     private MeshRenderer[] renderers;
+
+    [Header("Cambio de Nivel")]
+    public float alturaCambioNivel = 5.5f;
+
+    private GenerarEnemigo generador;
+
+    void Start()
+    {
+        generador = FindAnyObjectByType<GenerarEnemigo>();
+    }
 
     void Awake()
     {
@@ -55,6 +66,23 @@ public class NaveController : MonoBehaviour
         {
             tiempoSiguienteDisparo = Time.time + cadenciaDisparo;
             Disparar();
+        }
+
+        //cambio de escena
+        if (generador != null)
+        {
+            Debug.Log("Y = " + transform.position.y);
+
+            if (generador.NivelCompletado)
+            {
+                Debug.Log("Nivel completado");
+
+                if (transform.position.y >= alturaCambioNivel)
+                {
+                    Debug.Log("Cargando Scene2");
+                    SceneManager.LoadScene("Scene2");
+                }
+            }
         }
     }
 

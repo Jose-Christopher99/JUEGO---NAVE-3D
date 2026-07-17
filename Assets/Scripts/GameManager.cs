@@ -3,6 +3,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    
 
     [Header("Configuración de Vidas")]
     public int vidasIniciales = 3;
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour
     [Header("Referencias UI")]
     public TextMeshProUGUI textoVidas;
     public TextMeshProUGUI textoPuntaje;
+    
+    public TextMeshProUGUI textoNivel;
 
     void Awake()
     {
@@ -31,6 +34,7 @@ public class GameManager : MonoBehaviour
     {
         vidasActuales = vidasIniciales;
         ActualizarUI();
+        OcultarMensajeNivel();
     }
 
     public void RestarVida()
@@ -56,18 +60,42 @@ public class GameManager : MonoBehaviour
     {
         if (textoVidas != null)
         {
-            textoVidas.text = "Vidas: " + vidasActuales;
+            textoVidas.text = "Vidas x " + vidasActuales;
         }
 
         if (textoPuntaje != null)
         {
-            textoPuntaje.text = "Puntaje: " + puntajeActual;
+            textoPuntaje.text = "Score: " + puntajeActual;
+        }
+    }
+
+    public void MostrarMensajeNivel()
+    {
+        Debug.Log("SE LLAMÓ MostrarMensajeNivel");
+        if (textoNivel != null)
+        {
+            Debug.Log("Texto asignado: " + textoNivel.name);
+            textoNivel.text = "MISIÓN COMPLETADA\n\n↑ Avanza al siguiente nivel ↑";
+            textoNivel.gameObject.SetActive(true);
+            textoNivel.fontSize = 40;
+        }
+        else
+        {
+            Debug.Log("textoNivel es NULL");
+        }
+    }
+
+    public void OcultarMensajeNivel()
+    {
+        if (textoNivel != null)
+        {
+            textoNivel.gameObject.SetActive(false);
         }
     }
 
     void GameOver()
     {
-        Debug.Log("¡Game Over! Puntaje final: " + puntajeActual);
+        Debug.Log("¡Game Over! Score final: " + puntajeActual);
 
         NaveController nave = FindAnyObjectByType<NaveController>();
         if (nave != null)

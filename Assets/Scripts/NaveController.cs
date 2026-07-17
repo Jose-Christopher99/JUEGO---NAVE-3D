@@ -6,6 +6,7 @@ public class NaveController : MonoBehaviour
     public float velocidad = 10f;
     public float limiteX = 8.5f;
     public float limiteY = 4.5f;
+    [SerializeField] private SimpleJoystick joystick;
 
     [Header("Configuración de Disparo")]
     public GameObject proyectilPrefab;
@@ -37,6 +38,11 @@ public class NaveController : MonoBehaviour
         //Movimiento de la Nave
         float movimientoHorizontal = Input.GetAxis("Horizontal");
         float movimientoVertical = Input.GetAxis("Vertical");
+        if (joystick != null && joystick.InputDirection != Vector2.zero)
+        {
+            movimientoHorizontal = joystick.InputDirection.x;
+            movimientoVertical = joystick.InputDirection.y;
+        }
         Vector3 direccion = new Vector3(movimientoHorizontal, movimientoVertical, 0f);
         Vector3 nuevaPosicion = transform.position + direccion * velocidad * Time.deltaTime;
 
@@ -45,14 +51,14 @@ public class NaveController : MonoBehaviour
         transform.position = nuevaPosicion;
 
         //Logica de Disparo
-        if ((Input.GetButton("Fire1") || Input.GetKey(KeyCode.Space)) && Time.time >= tiempoSiguienteDisparo)
+        if ((Input.GetKey(KeyCode.Space)) && Time.time >= tiempoSiguienteDisparo)
         {
             tiempoSiguienteDisparo = Time.time + cadenciaDisparo;
             Disparar();
         }
     }
 
-    void Disparar()
+    public void Disparar()
     {
         if (proyectilPrefab != null && puntoDisparo != null)
         {
